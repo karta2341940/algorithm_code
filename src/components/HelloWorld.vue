@@ -1,75 +1,66 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="align-center text-center fill-height">
-      <v-img height="300" src="@/assets/logo.svg" />
+    <v-container>
+        <v-row align="center">
+            <v-col cols="8">
+                <v-text-field label="String" clearable="" v-model:model-value="inputString" @click:clear="clearString"
+                    @update:model-value="fieldUpdate"></v-text-field>
+            </v-col>
+            <v-col cols="4">
+                <v-btn color="primary" @click="submit">Computing</v-btn>
+            </v-col>
+        </v-row>
 
-      <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
+        
+            <v-table height="20em" hover="true" fixed-header="true">
 
-      <h1 class="text-h2 font-weight-bold">Vuetify</h1>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Probability</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="( symbol, index ) in  processedString ">
+                        <td>{{ symbol }}</td>
+                        <td>{{ String(probilities[index]*100).substring(0,8) }}%</td>
+                    </tr>
+                </tbody>
 
-      <div class="py-14" />
+            </v-table>
+     
 
-      <v-row class="d-flex align-center justify-center">
-        <v-col cols="auto">
-          <v-btn
-            href="https://vuetifyjs.com/components/all/"
-            min-width="164"
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="text"
-          >
-            <v-icon
-              icon="mdi-view-dashboard"
-              size="large"
-              start
-            />
 
-            Components
-          </v-btn>
-        </v-col>
 
-        <v-col cols="auto">
-          <v-btn
-            color="primary"
-            href="https://vuetifyjs.com/introduction/why-vuetify/#feature-guides"
-            min-width="228"
-            rel="noopener noreferrer"
-            size="x-large"
-            target="_blank"
-            variant="flat"
-          >
-            <v-icon
-              icon="mdi-speedometer"
-              size="large"
-              start
-            />
 
-            Get Started
-          </v-btn>
-        </v-col>
-
-        <v-col cols="auto">
-          <v-btn
-            href="https://community.vuetifyjs.com/"
-            min-width="164"
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="text"
-          >
-            <v-icon
-              icon="mdi-account-group"
-              size="large"
-              start
-            />
-
-            Community
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-responsive>
-  </v-container>
+    </v-container>
 </template>
 
 <script setup>
-  //
+import { ref } from 'vue'
+const inputString = ref('')
+const processedString = ref()
+const probilities = ref()
+
+function clearString() {
+    inputString.value = ''
+    processedString.value = []
+    probilities.value = []
+}
+function submit() {
+    console.log("Submit")
+    
+}
+function fieldUpdate() {
+    try {
+        processedString.value = inputString.value.split('').map((value) => value === " " ? "▲" : value).filter((item, index, array) => array.indexOf(item) === index)
+        probilities.value = inputString.value.split('').map((item, index, array) => {
+            return array.filter((item2) => item2 === item).length / array.length
+        })
+    }
+    catch (e) {
+        inputString.value = ''
+        processedString.value = []
+        probilities.value = []
+    }
+}
 </script>
