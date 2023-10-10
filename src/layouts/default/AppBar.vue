@@ -3,7 +3,7 @@
     <v-app-bar-title>
       <v-icon icon="mdi-circle-slice-6" />
 
-      Algorithm Coding
+      Arithmetic Coding
     </v-app-bar-title>
   </v-app-bar>
 </template>
